@@ -20,7 +20,8 @@ module.exports = {
           ternary : 'var(--text-tc-ternary)',
         },
         //General
-        'purple' : 'rgba(96, 102, 208, 0.8)'
+        'purple' : 'rgba(96, 102, 208, 0.8)',
+        'yellow' : '#F9A826'
       },
       borderRadius : {
         '12px' : '12px',

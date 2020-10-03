@@ -6,12 +6,14 @@
 /* Theme Setup */
 .light-theme {
   /* Theme Colors */
-  --bg-background-primary: white;
+  --bg-background-primary: #edf2f7;
   --bg-background-secondary: #f7fafc;
   --bg-background-ternary: #e2e8f0;
 
   /* Font */
   --text-tc-primary: #000000;
+  --text-tc-secondary: #2F527B;
+  --text-tc-ternary: rgba(96, 102, 208, 0.8);
 }
 
 .dark-theme {
@@ -35,5 +37,8 @@
 }
 .btn{
     @apply text-tc-ternary w-full py-2 px-5 rounded-12px border border-purple
+}
+.btn:hover{
+    @apply bg-yellow text-white border-transparent
 }
 @tailwind utilities;

@@ -17,22 +17,22 @@
                         <div class="px-8 py-6">
                             <h2 class="text-tc-secondary font-bold text-2xl">Kuala Lumpur is the capital of</h2>
                             <div>
-                                <button class="flex items-center btn my-5">
+                                <app-button :onClick="test">
                                     <span class="text-base">A</span>
                                     <span class="ml-8 text-sm">Vietnam</span>
-                                </button>
-                                <button class="flex items-center btn my-5">
+                                </app-button>
+                                <app-button :onClick="test">
                                     <span class="text-base">A</span>
                                     <span class="ml-8 text-sm">Vietnam</span>
-                                </button>
-                                <button class="flex items-center btn my-5">
+                                </app-button>
+                                <app-button :onClick="test">
                                     <span class="text-base">A</span>
                                     <span class="ml-8 text-sm">Vietnam</span>
-                                </button>
-                                <button class="flex items-center btn my-5">
+                                </app-button>
+                                <app-button :onClick="test">
                                     <span class="text-base">A</span>
                                     <span class="ml-8 text-sm">Vietnam</span>
-                                </button>
+                                </app-button>
                             </div>
                         </div>
                     </div>
@@ -52,9 +52,15 @@ export default {
     name: 'App',
     components: {
         'AppThemeSwitcher': () => import('@/components/ThemeSwitcher.vue'),
+        'AppButton': () => import('@/components/Button.vue'),
     },
     computed: {
-        ...mapState(['currentTheme'])
+        ...mapState(['currentTheme']),
+    },
+    methods: {
+        test() {
+            console.log("TEST");
+        }
     }
 }
 </script>
