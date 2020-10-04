@@ -61,11 +61,5 @@ export const CountryMixin = {
         // console.log("Error Occured -",err.message);
       }
     },
-    //Fnuction to generate a random number between low,high value
-    generateRandomNumber(low, high) {
-      let totalNumbers = high - low + 1;
-      let result = Math.floor(Math.random() * totalNumbers) + low;
-      return result;
-    },
   },
 };

@@ -28,14 +28,16 @@
                                 <img class="ml-auto w-32" src="@/assets/images/globe.svg" alt="Country quiz">
                             </div>
                             <div class="px-8 py-6">
-                                <h2 class="text-tc-secondary font-bold text-2xl">Kuala Lampur is the capital of</h2>
-                                <div>
-                                    <app-button :onClick="test">
-                                        <span class="text-base">A</span>
-                                        <span class="ml-8 text-sm">India</span>
-                                    </app-button>
+                                <div v-for="(question,index) in questions" :key="index">
+                                    <h2 class="text-tc-secondary font-bold text-2xl">{{question.title}} is the capital of</h2>
+                                    <div>
+                                        <app-button v-for="(option,opIndex) in question.options" :key="opIndex" :onClick="test">
+                                            <span class="text-base">A</span>
+                                            <span class="ml-8 text-sm text-left">{{option.value}}</span>
+                                        </app-button>
+                                    </div>
+                                    <hr>
                                 </div>
-                                <hr>
                             </div>
                         </template>
                     </div>
@@ -52,10 +54,11 @@
 <script>
 import { mapState } from 'vuex';
 import { CountryMixin } from '@/mixins/countryApi.js';
+import { helperFunctions } from '@/mixins/helperFunctions.js';
 
 export default {
     name: 'App',
-    mixins: [CountryMixin],
+    mixins: [CountryMixin,helperFunctions],
     data() {
         return {
             //THe amount of records you need from the API
@@ -124,8 +127,9 @@ export default {
 
                 //Preparing our question object
                 const question = {
-                    question: randomCountry.capital,
-                    options: randomOptions
+                    title: randomCountry.capital,
+                    //Shuffle Options before storing them
+                    options: this.shuffle(randomOptions)
                 }
                 //Pushing prepared question to the array
                 questions.push(question);
