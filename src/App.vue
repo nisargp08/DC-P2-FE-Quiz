@@ -29,14 +29,7 @@
                             </div>
                             <div class="px-8 py-6">
                                 <div v-for="(question,index) in questions" :key="index">
-                                    <h2 class="text-tc-secondary font-bold text-2xl">{{question.title}} is the capital of</h2>
-                                    <div>
-                                        <app-button v-for="(option,opIndex) in question.options" :key="opIndex" :onClick="test">
-                                            <span class="text-base">A</span>
-                                            <span class="ml-8 text-sm text-left">{{option.value}}</span>
-                                        </app-button>
-                                    </div>
-                                    <hr>
+                                    <app-question-card :question="question"></app-question-card>
                                 </div>
                             </div>
                         </template>
@@ -72,19 +65,17 @@ export default {
     async created() {
         //Function called from mixin
         this.countryData = await this.fetchCountryData();
-        this.questions = this.generateQuestion(5);
+        this.questions = this.generateQuestion(1);
     },
     components: {
         'AppThemeSwitcher': () => import('@/components/ThemeSwitcher.vue'),
-        'AppButton': () => import('@/components/Button.vue'),
+        // 'AppButton': () => import('@/components/Button.vue'),
+        'AppQuestionCard': () => import('@/components/QuestionCard.vue'),
     },
     computed: {
         ...mapState(['currentTheme']),
     },
     methods: {
-        test() {
-            console.log("TEST");
-        },
         generateQuestion(totalQuestions) {
             //Local questions array
             let questions = [];
