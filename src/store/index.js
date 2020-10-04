@@ -9,7 +9,7 @@ const store = new Vuex.Store({
   plugins: [createPersistedState()],
   
   state : {
-    currentTheme : 'light-theme',
+    currentTheme : 'dark-theme',
   },
 
   mutations : {
