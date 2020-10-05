@@ -1,7 +1,7 @@
 <template>
 <div id="app">
     <div class="bg-background-primary transition-background-25-ease-in" :class="currentTheme">
-        <div class="flex flex-col min-h-screen font-poppins font-medium text-tc-primary p-4">
+        <div class="flex flex-col min-h-screen font-poppins font-medium text-tc-primary p-4 lg:max-w-screen-xl lg:mx-auto lg:p-12">
             <header>
                 <!-- Theme Switcher icons with functionality -->
                 <app-theme-switcher></app-theme-switcher>
@@ -23,14 +23,26 @@
                                 <p class="text-tc-ternary">Loading...</p>
                             </div>
                         </template>
-                        <template v-if="done">
+                        <!-- When api is done loading and quiz in progress then question -->
+                        <template v-if="done && quizInProgress">
                             <div class="text-right -mt-12">
                                 <img class="ml-auto w-32" src="@/assets/images/globe.svg" alt="Country quiz">
                             </div>
                             <div class="px-8 py-6">
                                 <div v-for="(question,index) in questions" :key="index">
-                                    <app-question-card :question="question"></app-question-card>
+                                    <app-question-card v-if="index == currentStep" @nextQuestion="nextQuestion" :question="question"></app-question-card>
                                 </div>
+                            </div>
+                        </template>
+                        <!-- When quiz is finished show results -->
+                        <template v-if="done && !quizInProgress">
+                            <div class="px-8 py-6 text-center">
+                                <div class="text-right">
+                                    <img class="ml-auto" src="@/assets/images/winner.svg" alt="Country quiz">
+                                </div>
+                                <h2 class="font-bold text-4xl text-dark-blue mt-8">Results</h2>
+                                <p class="font-normal text-base text-dark-blue">You got <span class="font-bold text-light-green text-3xl">{{quizScore}}</span> correct answers</p>
+                                <button @click="setupQuiz()" class="font-bold text-lg text-dark-blue mt-8 py-4 px-12 rounded-12px border border-2 border-dark-blue hover:bg-dark-blue hover:text-white focus:outline-none">Try again</button>
                             </div>
                         </template>
                     </div>
@@ -51,21 +63,25 @@ import { helperFunctions } from '@/mixins/helperFunctions.js';
 
 export default {
     name: 'App',
-    mixins: [CountryMixin,helperFunctions],
+    mixins: [CountryMixin, helperFunctions],
     data() {
         return {
-            //THe amount of records you need from the API
-            // limit: 250,
+            //Quiz total questions
+            quizQuestions: 5,
+            //Score
+            quizScore: 0,
+            //Current step
+            currentStep: 0,
             //Country information
             countryData: [],
             //Questions 
             questions: [],
+            //Quiz tracking variables
+            quizInProgress: false,
         }
     },
     async created() {
-        //Function called from mixin
-        this.countryData = await this.fetchCountryData();
-        this.questions = this.generateQuestion(1);
+        await this.setupQuiz();
     },
     components: {
         'AppThemeSwitcher': () => import('@/components/ThemeSwitcher.vue'),
@@ -79,7 +95,7 @@ export default {
         generateQuestion(totalQuestions) {
             //Local questions array
             let questions = [];
-            // If we do not have questions equal to totalQustions
+            // Untill we do not have questions equal to totalQustions
             while (questions.length < totalQuestions) {
                 //To pick a random Country
                 let randomCountryIndex = this.generateRandomNumber(0, this.countryData.length);
@@ -127,7 +143,36 @@ export default {
             }
             //Assigning questions 
             return questions;
-        }
+        },
+        nextQuestion(score) {
+            console.log(score);
+            //Add score if correct
+            if (score > 0) {
+                this.quizScore += score;
+                if (this.currentStep < this.quizQuestions) {
+                    this.currentStep++;
+                }
+                //All questions answers and quiz is concluded
+                if (this.currentStep == this.quizInProgress) {
+                    this.quizInProgress = false;
+                }
+            }
+            else {
+                //User answered wrong - terminate quiz
+                this.quizInProgress = false;
+            }
+        },
+        async setupQuiz() {
+            //Score
+            this.quizScore = this.currentStep = 0;
+            //Generate question data and assign to proper variables
+            //Function called from mixin
+            this.countryData = await this.fetchCountryData();
+            this.questions = this.generateQuestion(this.quizQuestions);
+            //Start quiz
+            this.quizInProgress = true;
+
+        },
     }
 }
 </script>

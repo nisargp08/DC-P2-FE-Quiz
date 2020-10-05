@@ -6,12 +6,6 @@
 
 <script>
 export default {
-    // props : {
-    //     onClick : {
-    //         type : Function,
-    //         required : true
-    //     }
-    // }
     methods : {
         //This functions emits an event to the parent whenever the button is clicked
         onClick(){

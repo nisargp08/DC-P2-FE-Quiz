@@ -41,4 +41,16 @@
 .btn:hover{
     @apply bg-yellow text-white border-transparent
 }
+.btn-success {
+    @apply bg-light-green text-white border-transparent 
+}
+.btn-success:hover{
+    @apply bg-light-green 
+}
+.btn-danger {
+    @apply bg-light-red text-white border-transparent 
+}
+.btn-danger:hover{
+    @apply bg-light-red 
+}
 @tailwind utilities;
