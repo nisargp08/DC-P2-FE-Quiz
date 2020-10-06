@@ -31,7 +31,7 @@ module.exports = {
         '24px' : '24px'
       },
       boxShadow : {
-        'yellow' : 'box-shadow: 0px 2px 4px rgba(252, 168, 47, 0.4)'
+        'yellow' : '0px 2px 4px rgba(252, 168, 47, 0.4)',
       }
     },
   },
