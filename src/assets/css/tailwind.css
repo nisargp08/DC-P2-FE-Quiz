@@ -11,7 +11,7 @@
   --bg-background-ternary: #e2e8f0;
 
   /* Font */
-  --text-tc-primary: #000000;
+  --text-tc-primary: white;
   --text-tc-secondary: #2F527B;
   --text-tc-ternary: rgba(96, 102, 208, 0.8);
 }

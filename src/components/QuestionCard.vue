@@ -1,10 +1,16 @@
 <template>
 <div>
-    <h2 class="text-tc-secondary font-bold text-2xl">{{question.title}} is the capital of</h2>
+    <!-- When question is of 'Capital' type -->
+    <h2 v-if="question.type == 'capital'" class="text-tc-secondary font-bold text-2xl">{{question.title}} is the capital of</h2>
+    <!-- When question is of 'Flag' type -->
+    <div v-if="question.type == 'flag'">
+        <img class="w-32" :src="question.title" alt="Country Flag">
+        <h2 class="text-tc-secondary font-bold text-2xl mt-2">Which country does this flag belong to?  </h2>
+    </div>
     <div>
         <div v-for="(option,opIndex) in question.options" :key="opIndex">
             <app-button :disabled="disabled" :class="highlightAnswer(opIndex)" @onClick="checkAnswer(opIndex)" class="transition-all-25-ease-in">
-                <span class="text-base">A</span>
+                <span class="text-base">{{ opIndex | options}}</span>
                 <span class="flex-1 ml-8 text-sm text-left">{{option.value}}</span>
                 <!-- Checkmark if correct -->
                 <svg v-if="opIndex == answerIndex" class="w-4 h-4 fill-current text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -81,6 +87,17 @@ export default {
             this.$emit('nextQuestion',this.score);
         }
     },
+    filters : {
+        //Return alphabet based on the option index
+        options(value){
+            switch(value) {
+                case 0 : return 'A';
+                case 1 : return 'B';
+                case 2 : return 'C';
+                case 3 : return 'D';
+            }
+        }
+    }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <div class="bg-background-primary transition-background-25-ease-in" :class="currentTheme">
+    <div class="bg-background-primary transition-all-25-ease-in" :class="currentTheme">
         <div class="flex flex-col min-h-screen font-poppins font-medium text-tc-primary p-4 lg:max-w-screen-xl lg:mx-auto lg:p-12">
             <header>
                 <!-- Theme Switcher icons with functionality -->
@@ -11,7 +11,7 @@
                     <!-- text-4xl larger viewport -->
                     <h1 class="font-bold text-2xl uppercase">Country quiz</h1>
                     <div class="flex flex-col bg-white mt-3 rounded-24px">
-                        <template v-if="errored">{{ errorMsg }}</template>
+                        <template v-if="errored"><div class="px-8 py-6 text-black">{{ errorMsg }}</div></template>
                         <!-- Display loader when api fetch in progress -->
                         <template v-if="loading">
                             <div class="flex flex-col items-center justify-center px-8 py-6">
@@ -30,6 +30,7 @@
                             </div>
                             <div class="px-8 py-6">
                                 <div v-for="(question,index) in questions" :key="index">
+                                    <!-- Show question equal to the currentStep -->
                                     <app-question-card v-if="index == currentStep" @nextQuestion="nextQuestion" :question="question"></app-question-card>
                                 </div>
                             </div>
@@ -49,7 +50,7 @@
                 </div>
             </main>
             <footer class="text-center my-8">
-                <p class="font-montserrat text-sm font-bold leading-4 text-gray-500">Nisarg Patel @ DevChallenges.io</p>
+                <p class="font-montserrat text-sm font-bold leading-4 text-gray-100">Nisarg Patel @ DevChallenges.io</p>
             </footer>
         </div>
     </div>
@@ -131,10 +132,24 @@ export default {
                     }
                     randomOptions.push(option);
                 }
-
+                
+                //Alternate question between capital and flag
+                let questionTitle = "";
+                let questionType = "";
+                if(questions.length % 2 == 0){
+                    // Generate 'flag' question for every even question
+                    questionTitle = randomCountry.flag;
+                    questionType = "flag";
+                } else {
+                    //Generate 'Capital' question for every odd questions
+                    questionTitle = randomCountry.capital;
+                    questionType = "capital";
+                }
                 //Preparing our question object
                 const question = {
-                    title: randomCountry.capital,
+                    title: questionTitle,
+                    //Type of question : Capital or Flag
+                    type : questionType,
                     //Shuffle Options before storing them
                     options: this.shuffle(randomOptions)
                 }
@@ -145,7 +160,6 @@ export default {
             return questions;
         },
         nextQuestion(score) {
-            console.log(score);
             //Add score if correct
             if (score > 0) {
                 this.quizScore += score;
@@ -153,7 +167,7 @@ export default {
                     this.currentStep++;
                 }
                 //All questions answers and quiz is concluded
-                if (this.currentStep == this.quizInProgress) {
+                if (this.currentStep == this.quizQuestions) {
                     this.quizInProgress = false;
                 }
             }
@@ -181,5 +195,8 @@ export default {
 #app {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+.light-theme{
+    background: url('~@/assets/images/background.png') no-repeat center;
 }
 </style>
